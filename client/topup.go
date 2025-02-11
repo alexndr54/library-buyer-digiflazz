@@ -2,9 +2,9 @@ package client
 
 import (
 	"bytes"
-	"digiflazz/helper"
 	"encoding/json"
 	"errors"
+	"github.com/alexndr54/library-buyer-digiflazz"
 	"io"
 	"net/http"
 )

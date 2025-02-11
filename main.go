@@ -1,7 +1,7 @@
 package main
 
 import (
-	"digiflazz/webook"
+	"github.com/alexndr54/library-buyer-digiflazz/webook"
 	"github.com/gofiber/fiber/v2"
 )
 

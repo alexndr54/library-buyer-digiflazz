@@ -1,8 +1,8 @@
 package test
 
 import (
-	"digiflazz/client"
 	"fmt"
+	"github.com/alexndr54/library-buyer-digiflazz/client"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

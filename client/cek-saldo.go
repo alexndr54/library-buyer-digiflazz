@@ -2,9 +2,9 @@ package client
 
 import (
 	"bytes"
-	"digiflazz/helper"
 	"encoding/json"
 	"errors"
+	"github.com/alexndr54/library-buyer-digiflazz/helper"
 	"io"
 	"net/http"
 )
@@ -44,7 +44,7 @@ func CekSaldo(username, apiKey string) (*CekSaldoResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var response CekSaldoResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
