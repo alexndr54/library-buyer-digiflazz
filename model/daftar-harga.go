@@ -1,13 +1,4 @@
-package client
-
-import (
-	"bytes"
-	"encoding/json"
-	"errors"
-	"github.com/alexndr54/library-buyer-digiflazz/helper"
-	"io"
-	"net/http"
-)
+package model
 
 type DaftarHargaRequest struct {
 	Cmd      string `json:"cmd"`
@@ -41,45 +32,4 @@ type DaftarHargaResponseError struct {
 		Rc      string `json:"rc"`
 		Message string `json:"message"`
 	} `json:"data"`
-}
-
-func DaftarHarga(username, apiKey string) (*DaftarHargaResponse, error) {
-	sign := helper.GenerateMD5Hash(username + apiKey + "prepaid")
-	requestBody, err := json.Marshal(DaftarHargaRequest{
-		Cmd:      "prepaid",
-		Username: username,
-		Sign:     sign,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := http.Post("https://api.digiflazz.com/v1/price-list", "application/json", bytes.NewBuffer(requestBody))
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var response DaftarHargaResponse
-	err = json.Unmarshal(body, &response)
-	if err != nil {
-		var dherror DaftarHargaResponseError
-		err = json.Unmarshal(body, &dherror)
-		if err != nil {
-			return nil, err
-		}
-
-		response.Error = dherror
-	}
-
-	if response.Error.Data.Rc != "" {
-		return nil, errors.New(response.Error.Data.Message)
-	}
-
-	return &response, nil
 }

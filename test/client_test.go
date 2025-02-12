@@ -7,27 +7,25 @@ import (
 	"testing"
 )
 
-var (
-	USERNAME        = ""
-	DEVELOPMENT_KEY = ""
-)
+var Digi = client.NewDigiflazz("your_username", "yourkey")
 
 func TestCekSaldo(t *testing.T) {
 	t.Run("Cek Saldo Berhasil", func(t *testing.T) {
-		saldo, err := client.CekSaldo(USERNAME, DEVELOPMENT_KEY)
+		saldo, err := Digi.CekSaldo()
 		assert.Nil(t, err)
 		t.Log("Saldo: ", saldo.Data.Deposit)
 	})
 
 	t.Run("Cek Saldo Gagal", func(t *testing.T) {
-		_, err := client.CekSaldo("golekworing", DEVELOPMENT_KEY)
+		Digi.Username = "ini_username_salah"
+		_, err := Digi.CekSaldo()
 		assert.Nil(t, err, "Gagal Pesan: "+err.Error())
 	})
 }
 func TestDaftarHarga(t *testing.T) {
 	t.Run("Daftar Harga Berhasil", func(t *testing.T) {
 
-		daftarHarga, err := client.DaftarHarga(USERNAME, DEVELOPMENT_KEY)
+		daftarHarga, err := Digi.DaftarHarga()
 		assert.Nil(t, err)
 		if daftarHarga.Error.Data.Rc == "" {
 			t.Log("Product 1:", daftarHarga.Data[0])
@@ -35,13 +33,14 @@ func TestDaftarHarga(t *testing.T) {
 	})
 
 	t.Run("Daftar Harga Gagal", func(t *testing.T) {
-		_, err := client.DaftarHarga("golekworing", DEVELOPMENT_KEY)
+		Digi.Username = "ini_username_salah"
+		_, err := Digi.DaftarHarga()
 		assert.Nil(t, err, "Gagal Pesan: "+err.Error())
 	})
 }
 func TestTopup(t *testing.T) {
 	t.Run("Topup Berhasil", func(t *testing.T) {
-		up, err := client.TopUp(USERNAME, DEVELOPMENT_KEY, "PLN20", "56604171910", "asfhvasfvha")
+		up, err := Digi.Topup("PLN20", "56604171910", "asfhvasfvha")
 		assert.Nil(t, err)
 
 		if err == nil {
@@ -50,7 +49,7 @@ func TestTopup(t *testing.T) {
 	})
 
 	t.Run("Gagal Topup", func(t *testing.T) {
-		_, err := client.TopUp("", "", "Fucur", "56604171910", "asfhvasfvha")
+		_, err := Digi.Topup("Fucur", "56604171910", "asfhvasfvha")
 		assert.Nil(t, err, "Error: "+err.Error())
 	})
 }
