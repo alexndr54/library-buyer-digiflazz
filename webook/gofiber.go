@@ -23,6 +23,8 @@ type Payload struct {
 	} `json:"data"`
 }
 
+// GofiberWebhookHandler untuk meng handle webhook yang dikirim dari digiflazz, menggunakan framework gofiber
+// *fiber.Ctx adalah parameter yang diperlukan untuk mengambil data dari request
 func GofiberWebhookHandler(c *fiber.Ctx) (error, *Payload) {
 	event := c.GetReqHeaders()["X-Digiflazz-Event"][0]
 	var payload *Payload

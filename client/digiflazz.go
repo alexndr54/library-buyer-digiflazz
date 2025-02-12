@@ -15,6 +15,9 @@ type Digiflazz struct {
 	Key      string
 }
 
+// NewDigiflazz Membuat object digiflazz baru, harus dilakukan sebelum melakukan request ke API digiflazz
+// username: Username akun digiflazz anda
+// key: ProductionKey ataupun DevelopmentKey akun digiflazz anda
 func NewDigiflazz(username, key string) *Digiflazz {
 	return &Digiflazz{
 		Username: username,
@@ -23,6 +26,7 @@ func NewDigiflazz(username, key string) *Digiflazz {
 
 }
 
+// CekSaldo Untuk melakukan cek saldo yang tersedia di akun anda,tanpa memberikan parameter apapun
 func (d *Digiflazz) CekSaldo() (*model.CekSaldoResponse, error) {
 	sign := helper.GenerateMD5Hash(d.Username + d.Key + "depo")
 	requestBody, err := json.Marshal(model.CekSaldoRequest{
@@ -60,6 +64,7 @@ func (d *Digiflazz) CekSaldo() (*model.CekSaldoResponse, error) {
 	return &response, nil
 }
 
+// DaftarHarga Untuk mendapatkan daftar harga produk anda
 func (d *Digiflazz) DaftarHarga() (*model.DaftarHargaResponse, error) {
 	sign := helper.GenerateMD5Hash(d.Username + d.Key + "prepaid")
 	requestBody, err := json.Marshal(model.DaftarHargaRequest{
@@ -103,6 +108,10 @@ func (d *Digiflazz) DaftarHarga() (*model.DaftarHargaResponse, error) {
 	return &response, nil
 }
 
+// Topup untuk melakukan transaksi topup/pembelian
+// buyerSkuCode: Kode produk yang akan dibeli
+// customerNo: Nomor tujuan transaksi
+// refId: ID transaksi yang digunakan untuk mengecek status transaksi.
 func (d *Digiflazz) Topup(buyerSkuCode, customerNo, refId string) (*model.TopUpResponse, error) {
 	sign := helper.GenerateMD5Hash(d.Username + d.Key + refId)
 	requestBody, err := json.Marshal(model.TopUpRequest{
